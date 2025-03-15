@@ -93,8 +93,12 @@
             method: 'POST',
             body: formData,
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log("API Response:", response); // Log the response object
+            return response.json();
+        })
         .then(data => {
+            console.log("API Data:", data); // Log the data from the response
             if (data.download) {
                 document.getElementById('responseMessage').textContent = "Upload successful!";
                 const downloadLink = document.getElementById('downloadLink');
@@ -113,4 +117,3 @@
 
 </body>
 </html>
-
