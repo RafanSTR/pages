@@ -94,6 +94,8 @@
       try {
         const apiUrl = "https://upfile-five.vercel.app/api/file";
         
+        console.log("Sending request...");
+
         // Handle the fetch request with mode: "cors"
         const response = await fetch(apiUrl, {
           method: "POST",
@@ -104,11 +106,15 @@
           mode: "cors", // Enable CORS to avoid CORS-related issues
         });
 
+        console.log("Response Status:", response.status); // Log status code
+        console.log("Response Headers:", response.headers); // Log response headers
+        
         if (!response.ok) {
           throw new Error(`Server returned ${response.status}`);
         }
 
         const result = await response.json(); // Parse the JSON response
+        console.log("Response Body:", result); // Log body for debugging
 
         // Check if the result contains download URL
         if (result && result.download) {
