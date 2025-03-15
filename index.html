@@ -7,29 +7,14 @@
   <style>
     body {
       font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
       margin: 0;
       padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      overflow: hidden;
-      background: black;
     }
-    
-    .stars {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: url('https://www.script-tutorials.com/demos/360/images/stars.png') repeat;
-      animation: moveStars 50s linear infinite;
-    }
-
-    @keyframes moveStars {
-      from { background-position: 0 0; }
-      to { background-position: -10000px 5000px; }
-    }
-
     .container {
       background-color: white;
       padding: 30px;
@@ -37,17 +22,21 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       text-align: center;
       width: 320px;
-      position: relative;
-      z-index: 1;
     }
-    
-    .loading {
+    .spinner {
       display: none;
-      margin-top: 10px;
-      font-size: 16px;
-      color: #4CAF50;
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-left-color: #4CAF50;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 15px auto;
     }
-    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     button {
       background-color: #4CAF50;
       color: white;
@@ -58,19 +47,26 @@
       border-radius: 5px;
       margin-top: 15px;
     }
-    
-    button:hover {
-      background-color: #45a049;
+    .link-container {
+      margin-top: 20px;
+      display: none;
+    }
+    .error {
+      color: red;
+      margin-top: 15px;
     }
   </style>
 </head>
 <body>
-  <div class="stars"></div>
   <div class="container">
     <h1>Upload Your File</h1>
     <input type="file" id="fileInput" accept="*/*">
     <button onclick="uploadFile()">Upload</button>
-    <p class="loading" id="loading">Uploading...</p>
+    <div class="spinner" id="spinner"></div>
+    <div class="link-container" id="linkContainer">
+      <p>File uploaded successfully:</p>
+      <a id="downloadLink" href="#" target="_blank"></a>
+    </div>
     <p class="error" id="errorMsg"></p>
   </div>
 
@@ -78,27 +74,30 @@
     async function uploadFile() {
       const fileInput = document.getElementById("fileInput");
       const errorMsg = document.getElementById("errorMsg");
-      const loadingText = document.getElementById("loading");
-      
+      const linkContainer = document.getElementById("linkContainer");
+      const downloadAnchor = document.getElementById("downloadLink");
+      const spinner = document.getElementById("spinner");
+
       errorMsg.textContent = "";
-      loadingText.style.display = "block";
+      linkContainer.style.display = "none";
 
       const file = fileInput.files[0];
       if (!file) {
         errorMsg.textContent = "Please select a file to upload.";
-        loadingText.style.display = "none";
         return;
       }
 
+      spinner.style.display = "block"; 
+
       const formData = new FormData();
       formData.append("file", file);
-      
+
       try {
         const response = await fetch("https://upfile-five.vercel.app/api/file", {
           method: "POST",
           body: formData,
           headers: { "Accept": "application/json" },
-          mode: "cors",
+          mode: "cors"
         });
 
         if (!response.ok) {
@@ -106,11 +105,22 @@
         }
 
         const result = await response.json();
-        alert("Upload successful! File link: " + result.download);
+
+        if (result && result.download) {
+          downloadAnchor.href = result.download;
+          downloadAnchor.textContent = result.download;
+          linkContainer.style.display = "block";
+          errorMsg.textContent = "Upload successful!";
+          errorMsg.style.color = "green";
+        } else {
+          errorMsg.textContent = "Unexpected response format.";
+          errorMsg.style.color = "red";
+        }
       } catch (error) {
         errorMsg.textContent = "Upload failed. " + error.message;
+        errorMsg.style.color = "red";
       } finally {
-        loadingText.style.display = "none";
+        spinner.style.display = "none"; 
       }
     }
   </script>
