@@ -93,26 +93,27 @@
 
       try {
         const apiUrl = "https://upfile-five.vercel.app/api/file";
+        const proxyUrl = "https://corsproxy.io/?";
         
-        const response = await fetch(apiUrl, {
+        const response = await fetch(proxyUrl + apiUrl, {
           method: "POST",
-          body: formData,
-          mode: "no-cors" // Menghindari error CORS
+          body: formData
         });
 
-        // Karena mode no-cors, kita tidak bisa membaca respons langsung.
-        errorMsg.textContent = "Upload successful! Check your account for the file link.";
-        errorMsg.style.color = "green";
-        
-        // Tampilkan link secara manual (karena tidak bisa membaca respons)
-        downloadAnchor.href = "https://upfile-five.vercel.app/";
-        downloadAnchor.textContent = "Go to UpFile";
-        linkContainer.style.display = "block";
+        const result = await response.json(); // Ambil respons API
 
+        if (result.download) {
+          downloadAnchor.href = result.download;
+          downloadAnchor.textContent = result.download;
+          linkContainer.style.display = "block";
+        } else {
+          errorMsg.textContent = "Upload failed. Try again.";
+        }
       } catch (error) {
-        errorMsg.textContent = "Upload failed. Please try again.";
+        errorMsg.textContent = "An error occurred. Please try again.";
       }
     }
   </script>
 </body>
 </html>
+
