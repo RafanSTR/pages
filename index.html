@@ -1,142 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Upload File</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .container {
-      background-color: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      width: 320px;
-    }
-    h1 {
-      font-size: 22px;
-      margin-bottom: 20px;
-    }
-    input[type="file"] {
-      padding: 10px;
-      font-size: 16px;
-    }
-    button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-top: 15px;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    .link-container {
-      margin-top: 20px;
-      display: none;
-    }
-    .link-container a {
-      text-decoration: none;
-      color: #4CAF50;
-      font-weight: bold;
-      word-wrap: break-word;
-    }
-    .error {
-      color: red;
-      margin-top: 15px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload File</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            color: #333;
+        }
+        input[type="file"] {
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: #fafafa;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .download-link {
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .download-link:hover {
+            text-decoration: underline;
+        }
+        .response-message {
+            margin-top: 20px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Upload Your File</h1>
-    <input type="file" id="fileInput" accept="*/*">
-    <button onclick="uploadFile()">Upload</button>
-    <div class="link-container" id="linkContainer">
-      <p>File uploaded successfully! Download Link:</p>
-      <a id="downloadLink" href="#" target="_blank"></a>
-    </div>
-    <p class="error" id="errorMsg"></p>
-  </div>
 
-  <script>
-    async function uploadFile() {
-      const fileInput = document.getElementById("fileInput");
-      const errorMsg = document.getElementById("errorMsg");
-      const linkContainer = document.getElementById("linkContainer");
-      const downloadAnchor = document.getElementById("downloadLink");
+<div class="container">
+    <h1>Upload File</h1>
+    <input type="file" id="fileInput" />
+    <br>
+    <button id="uploadBtn">Upload File</button>
+    <div class="response-message" id="responseMessage"></div>
+    <a id="downloadLink" class="download-link" href="#" style="display: none;">Download Your File</a>
+</div>
 
-      errorMsg.textContent = ""; // Reset error
-      linkContainer.style.display = "none"; // Hide link before successful upload
+<script>
+    document.getElementById('uploadBtn').addEventListener('click', function() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
 
-      const file = fileInput.files[0];
-      if (!file) {
-        errorMsg.textContent = "Please select a file to upload.";
-        return;
-      }
+        if (!file) {
+            alert('Please select a file to upload.');
+            return;
+        }
 
-      const formData = new FormData();
-      formData.append("file", file);
+        const formData = new FormData();
+        formData.append("file", file);
 
-      try {
-        const apiUrl = "https://upfile-five.vercel.app/api/file";
-        
-        console.log("Sending request...");
+        // Display loading message
+        document.getElementById('responseMessage').textContent = "Uploading... Please wait.";
 
-        // Handle the fetch request with mode: "cors"
-        const response = await fetch(apiUrl, {
-          method: "POST",
-          body: formData,
-          headers: {
-            "Accept": "application/json", // Accept JSON response
-          },
-          mode: "cors", // Enable CORS to avoid CORS-related issues
+        fetch('https://upfile-five.vercel.app/api/file', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.download) {
+                document.getElementById('responseMessage').textContent = "Upload successful!";
+                const downloadLink = document.getElementById('downloadLink');
+                downloadLink.href = data.download;
+                downloadLink.style.display = "block"; // Show the download link
+            } else {
+                document.getElementById('responseMessage').textContent = "Upload failed. Please try again.";
+            }
+        })
+        .catch(error => {
+            document.getElementById('responseMessage').textContent = "Error uploading file. Please try again.";
+            console.error('Error uploading file:', error);
         });
+    });
+</script>
 
-        console.log("Response Status:", response.status); // Log status code
-        console.log("Response Headers:", response.headers); // Log response headers
-        
-        if (!response.ok) {
-          throw new Error(`Server returned ${response.status}`);
-        }
-
-        const result = await response.json(); // Parse the JSON response
-        console.log("Response Body:", result); // Log body for debugging
-
-        // Check if the result contains download URL
-        if (result && result.download) {
-          // Display download link
-          downloadAnchor.href = result.download;
-          downloadAnchor.textContent = "Download File";
-          linkContainer.style.display = "block";
-
-          errorMsg.textContent = "Upload successful!";
-          errorMsg.style.color = "green";
-        } else {
-          errorMsg.textContent = "Unexpected response format.";
-          errorMsg.style.color = "red";
-        }
-        
-      } catch (error) {
-        // Catch any errors during the fetch request and show an error message
-        console.error("Error during file upload:", error);
-        errorMsg.textContent = "Upload failed. " + error.message;
-        errorMsg.style.color = "red";
-      }
-    }
-  </script>
 </body>
 </html>
+
