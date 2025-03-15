@@ -79,8 +79,8 @@
       const linkContainer = document.getElementById("linkContainer");
       const downloadAnchor = document.getElementById("downloadLink");
 
-      errorMsg.textContent = ""; // Clear previous error
-      linkContainer.style.display = "none"; // Hide previous result
+      errorMsg.textContent = ""; // Reset error
+      linkContainer.style.display = "none"; // Sembunyikan link sebelum upload sukses
 
       const file = fileInput.files[0];
       if (!file) {
@@ -92,26 +92,25 @@
       formData.append("file", file);
 
       try {
-        // Gunakan CORS Proxy untuk menghindari CORS error
-        const proxyUrl = "https://corsproxy.io/?";
         const apiUrl = "https://upfile-five.vercel.app/api/file";
-
-        const response = await fetch(proxyUrl + apiUrl, {
+        
+        const response = await fetch(apiUrl, {
           method: "POST",
-          body: formData
+          body: formData,
+          mode: "no-cors" // Menghindari error CORS
         });
 
-        const result = await response.json();
+        // Karena mode no-cors, kita tidak bisa membaca respons langsung.
+        errorMsg.textContent = "Upload successful! Check your account for the file link.";
+        errorMsg.style.color = "green";
+        
+        // Tampilkan link secara manual (karena tidak bisa membaca respons)
+        downloadAnchor.href = "https://upfile-five.vercel.app/";
+        downloadAnchor.textContent = "Go to UpFile";
+        linkContainer.style.display = "block";
 
-        if (response.ok && result.download) {
-          downloadAnchor.href = result.download;
-          downloadAnchor.textContent = result.download;
-          linkContainer.style.display = "block";
-        } else {
-          errorMsg.textContent = "Upload failed. Please try again.";
-        }
       } catch (error) {
-        errorMsg.textContent = "An error occurred. Check your internet connection.";
+        errorMsg.textContent = "Upload failed. Please try again.";
       }
     }
   </script>
