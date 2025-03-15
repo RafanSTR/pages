@@ -1,7 +1,7 @@
 {
   "name": "file-uploader",
   "version": "1.0.0",
-  "main": "src/main.jsx",
+  "homepage": "https://rafanstr.github.io/pages/",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
