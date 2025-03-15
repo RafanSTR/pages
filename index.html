@@ -8,11 +8,12 @@
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
     .container {
       background-color: white;
@@ -78,8 +79,8 @@
       const linkContainer = document.getElementById("linkContainer");
       const downloadAnchor = document.getElementById("downloadLink");
 
-      errorMsg.textContent = "";
-      linkContainer.style.display = "none";
+      errorMsg.textContent = ""; // Reset error
+      linkContainer.style.display = "none"; // Sembunyikan link sebelum upload sukses
 
       const file = fileInput.files[0];
       if (!file) {
@@ -92,25 +93,29 @@
 
       try {
         const apiUrl = "https://upfile-five.vercel.app/api/file";
+        
         const response = await fetch(apiUrl, {
           method: "POST",
           body: formData
         });
 
         if (!response.ok) {
-          throw new Error("Upload failed. Server responded with an error.");
+          throw new Error(`Server returned ${response.status}`);
         }
 
-        const result = await response.json();
-        if (result.download) {
-          downloadAnchor.href = result.download;
-          downloadAnchor.textContent = result.download;
-          linkContainer.style.display = "block";
-        } else {
-          throw new Error("Upload successful, but no download link received.");
-        }
+        const result = await response.json(); // Membaca respons JSON dari API
+
+        // Tampilkan link download dari API
+        downloadAnchor.href = result.download;
+        downloadAnchor.textContent = "Download File";
+        linkContainer.style.display = "block";
+
+        errorMsg.textContent = "Upload successful!";
+        errorMsg.style.color = "green";
+        
       } catch (error) {
-        errorMsg.textContent = error.message;
+        errorMsg.textContent = "Upload failed. " + error.message;
+        errorMsg.style.color = "red";
       }
     }
   </script>
