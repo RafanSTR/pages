@@ -44,24 +44,50 @@
     button:hover {
       background-color: #45a049;
     }
+    .loading {
+      display: none;
+      margin-top: 20px;
+    }
+    .loading span {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin: 0 3px;
+      background-color: #4CAF50;
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+    .loading span:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+    .loading span:nth-child(2) {
+      animation-delay: -0.16s;
+    }
+    @keyframes bounce {
+      0%, 80%, 100% {
+        transform: scale(0);
+      }
+      40% {
+        transform: scale(1);
+      }
+    }
     .link-container {
       margin-top: 20px;
       display: none;
       text-align: left;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      width: 100%;
     }
-    .link-box {
-      word-break: break-all;
-      padding: 10px;
-      border: 2px solid #4CAF50;
-      border-radius: 5px;
-      background-color: white;
-      font-size: 14px;
-      max-width: 100%;
+    .link-container a {
       display: block;
-      overflow-x: auto;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      background: #fff;
+      border: 2px solid #4CAF50;
+      padding: 10px;
+      border-radius: 5px;
+      color: #4CAF50;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 14px;
     }
     .copy-button {
       background-color: #008CBA;
@@ -76,10 +102,6 @@
     .copy-button:hover {
       background-color: #007B9E;
     }
-    .error {
-      color: red;
-      margin-top: 15px;
-    }
   </style>
 </head>
 <body>
@@ -87,89 +109,75 @@
     <h1>Upload Your File</h1>
     <input type="file" id="fileInput" accept="*/*">
     <button onclick="uploadFile()">Upload</button>
+    <div class="loading" id="loading">
+      <span></span><span></span><span></span>
+    </div>
     <div class="link-container" id="linkContainer">
       <p>Your file has been uploaded successfully. Click the link below to download:</p>
-      <div class="link-box" id="downloadLink"></div>
+      <a id="downloadLink" href="#" target="_blank"></a>
       <button class="copy-button" id="copyButton" onclick="copyLink()">Copy Link</button>
     </div>
-    <p class="error" id="errorMsg"></p>
   </div>
 
   <script>
     async function uploadFile() {
       const fileInput = document.getElementById("fileInput");
-      const errorMsg = document.getElementById("errorMsg");
+      const loading = document.getElementById("loading");
       const linkContainer = document.getElementById("linkContainer");
-      const downloadBox = document.getElementById("downloadLink");
-
-      errorMsg.textContent = ""; 
-      linkContainer.style.display = "none"; 
-
+      const downloadAnchor = document.getElementById("downloadLink");
+      
+      linkContainer.style.display = "none";
+      loading.style.display = "block"; 
+      
       const file = fileInput.files[0];
       if (!file) {
-        errorMsg.textContent = "Please select a file to upload.";
+        alert("Please select a file to upload.");
+        loading.style.display = "none";
         return;
       }
 
       const formData = new FormData();
       formData.append("file", file);
-
+      
       try {
         const apiUrl = "https://upfile-five.vercel.app/api/file";
-        
-        console.log("Sending request...");
-
         const response = await fetch(apiUrl, {
           method: "POST",
           body: formData,
-          headers: {
-            "Accept": "application/json", 
-          },
-          mode: "cors", 
+          headers: { "Accept": "application/json" },
+          mode: "cors",
         });
 
-        console.log("Response Status:", response.status); 
-        console.log("Response Headers:", response.headers); 
-        
         if (!response.ok) {
           throw new Error(`Server returned ${response.status}`);
         }
 
-        const result = await response.json(); 
-        console.log("Response Body:", result); 
-
-        if (result && result.download) {
-          downloadBox.textContent = result.download;
-          downloadBox.setAttribute("data-link", result.download);
-          linkContainer.style.display = "block";
-
-          errorMsg.textContent = "Upload successful!";
-          errorMsg.style.color = "green";
-        } else {
-          errorMsg.textContent = "Unexpected response format.";
-          errorMsg.style.color = "red";
-        }
+        const result = await response.json();
         
+        if (result && result.download) {
+          downloadAnchor.href = result.download;
+          downloadAnchor.textContent = result.download;
+          linkContainer.style.display = "block";
+        } else {
+          alert("Unexpected response format.");
+        }
       } catch (error) {
-        console.error("Error during file upload:", error);
-        errorMsg.textContent = "Upload failed. " + error.message;
-        errorMsg.style.color = "red";
+        alert("Upload failed: " + error.message);
       }
+      
+      loading.style.display = "none";
     }
 
     function copyLink() {
-      const link = document.getElementById("downloadLink").getAttribute("data-link");
-
+      const link = document.getElementById("downloadLink").href;
       const tempInput = document.createElement("input");
       tempInput.value = link;
       document.body.appendChild(tempInput);
       tempInput.select();
       document.execCommand("copy");
       document.body.removeChild(tempInput);
-
       alert("Link copied to clipboard!");
     }
   </script>
 </body>
 </html>
-
