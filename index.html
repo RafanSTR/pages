@@ -80,7 +80,7 @@
       const downloadAnchor = document.getElementById("downloadLink");
 
       errorMsg.textContent = ""; // Reset error
-      linkContainer.style.display = "none"; // Sembunyikan link sebelum upload sukses
+      linkContainer.style.display = "none"; // Hide link before successful upload
 
       const file = fileInput.files[0];
       if (!file) {
@@ -94,26 +94,39 @@
       try {
         const apiUrl = "https://upfile-five.vercel.app/api/file";
         
+        // Handle the fetch request with mode: "cors"
         const response = await fetch(apiUrl, {
           method: "POST",
-          body: formData
+          body: formData,
+          headers: {
+            "Accept": "application/json", // Accept JSON response
+          },
+          mode: "cors", // Enable CORS to avoid CORS-related issues
         });
 
         if (!response.ok) {
           throw new Error(`Server returned ${response.status}`);
         }
 
-        const result = await response.json(); // Membaca respons JSON dari API
+        const result = await response.json(); // Parse the JSON response
 
-        // Tampilkan link download dari API
-        downloadAnchor.href = result.download;
-        downloadAnchor.textContent = "Download File";
-        linkContainer.style.display = "block";
+        // Check if the result contains download URL
+        if (result && result.download) {
+          // Display download link
+          downloadAnchor.href = result.download;
+          downloadAnchor.textContent = "Download File";
+          linkContainer.style.display = "block";
 
-        errorMsg.textContent = "Upload successful!";
-        errorMsg.style.color = "green";
+          errorMsg.textContent = "Upload successful!";
+          errorMsg.style.color = "green";
+        } else {
+          errorMsg.textContent = "Unexpected response format.";
+          errorMsg.style.color = "red";
+        }
         
       } catch (error) {
+        // Catch any errors during the fetch request and show an error message
+        console.error("Error during file upload:", error);
         errorMsg.textContent = "Upload failed. " + error.message;
         errorMsg.style.color = "red";
       }
@@ -121,4 +134,3 @@
   </script>
 </body>
 </html>
-
