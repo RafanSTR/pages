@@ -92,23 +92,37 @@
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "https://upfile-five.vercel.app/api/file", true);
 
-        // Define what to do when request is completed
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                console.log("API Data:", response); // Log the API response
+        // Log request headers and form data
+        xhr.onloadstart = function () {
+            console.log("Upload started");
+            console.log("FormData being sent:", formData);
+        };
 
-                if (response.download) {
-                    document.getElementById('responseMessage').textContent = "Upload successful!";
-                    const downloadLink = document.getElementById('downloadLink');
-                    downloadLink.href = response.download;
-                    downloadLink.style.display = "block"; // Show the download link
-                } else {
-                    document.getElementById('responseMessage').textContent = "Upload failed. Please try again.";
+        // Log status and response after request
+        xhr.onload = function() {
+            console.log("Response Status:", xhr.status);
+            console.log("Response Text:", xhr.responseText);
+
+            if (xhr.status === 200) {
+                try {
+                    var response = JSON.parse(xhr.responseText);
+                    console.log("API Data:", response);
+
+                    if (response.download) {
+                        document.getElementById('responseMessage').textContent = "Upload successful!";
+                        const downloadLink = document.getElementById('downloadLink');
+                        downloadLink.href = response.download;
+                        downloadLink.style.display = "block"; // Show the download link
+                    } else {
+                        document.getElementById('responseMessage').textContent = "Upload failed. Please try again.";
+                    }
+                } catch (error) {
+                    document.getElementById('responseMessage').textContent = "Error parsing response. Please try again.";
+                    console.error("Error parsing response:", error);
                 }
             } else {
                 document.getElementById('responseMessage').textContent = "Error uploading file. Please try again.";
-                console.error("Error uploading file, status code:", xhr.status);
+                console.error("Error with status:", xhr.status);
             }
         };
 
