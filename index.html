@@ -47,23 +47,39 @@
     .link-container {
       margin-top: 20px;
       display: none;
+      text-align: left;
     }
     .link-container a {
       text-decoration: none;
       color: #4CAF50;
       font-weight: bold;
       word-wrap: break-word;
-      font-size: 16px;
+      font-size: 14px;
       display: inline-block;
       padding: 10px;
       border: 2px solid #4CAF50;
       border-radius: 5px;
       background-color: white;
       transition: background-color 0.3s ease, color 0.3s ease;
+      max-width: 100%;
+      word-break: break-all; /* Break long URL in the box */
     }
     .link-container a:hover {
       background-color: #4CAF50;
       color: white;
+    }
+    .copy-button {
+      background-color: #008CBA;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+    .copy-button:hover {
+      background-color: #007B9E;
     }
     .error {
       color: red;
@@ -79,6 +95,7 @@
     <div class="link-container" id="linkContainer">
       <p>Your file has been uploaded successfully. Click the link below to download:</p>
       <a id="downloadLink" href="#" target="_blank"></a>
+      <button class="copy-button" id="copyButton" onclick="copyLink()">Copy Link</button>
     </div>
     <p class="error" id="errorMsg"></p>
   </div>
@@ -90,8 +107,8 @@
       const linkContainer = document.getElementById("linkContainer");
       const downloadAnchor = document.getElementById("downloadLink");
 
-      errorMsg.textContent = ""; // Reset error
-      linkContainer.style.display = "none"; // Hide link before successful upload
+      errorMsg.textContent = ""; 
+      linkContainer.style.display = "none"; 
 
       const file = fileInput.files[0];
       if (!file) {
@@ -107,31 +124,28 @@
         
         console.log("Sending request...");
 
-        // Handle the fetch request with mode: "cors"
         const response = await fetch(apiUrl, {
           method: "POST",
           body: formData,
           headers: {
-            "Accept": "application/json", // Accept JSON response
+            "Accept": "application/json", 
           },
-          mode: "cors", // Enable CORS to avoid CORS-related issues
+          mode: "cors", 
         });
 
-        console.log("Response Status:", response.status); // Log status code
-        console.log("Response Headers:", response.headers); // Log response headers
+        console.log("Response Status:", response.status); 
+        console.log("Response Headers:", response.headers); 
         
         if (!response.ok) {
           throw new Error(`Server returned ${response.status}`);
         }
 
-        const result = await response.json(); // Parse the JSON response
-        console.log("Response Body:", result); // Log body for debugging
+        const result = await response.json(); 
+        console.log("Response Body:", result); 
 
-        // Check if the result contains download URL
         if (result && result.download) {
-          // Display download link
           downloadAnchor.href = result.download;
-          downloadAnchor.textContent = result.download; // Menampilkan URL download sebagai teks link
+          downloadAnchor.textContent = result.download; 
           linkContainer.style.display = "block";
 
           errorMsg.textContent = "Upload successful!";
@@ -142,13 +156,24 @@
         }
         
       } catch (error) {
-        // Catch any errors during the fetch request and show an error message
         console.error("Error during file upload:", error);
         errorMsg.textContent = "Upload failed. " + error.message;
         errorMsg.style.color = "red";
       }
     }
+
+    function copyLink() {
+      const link = document.getElementById("downloadLink").href;
+
+      const tempInput = document.createElement("input");
+      tempInput.value = link;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand("copy");
+      document.body.removeChild(tempInput);
+
+      alert("Link copied to clipboard!");
+    }
   </script>
 </body>
 </html>
-
