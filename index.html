@@ -89,36 +89,39 @@
         // Display loading message
         document.getElementById('responseMessage').textContent = "Uploading... Please wait.";
 
-        fetch('https://upfile-five.vercel.app/api/file', {
-            method: 'POST',
-            body: formData,
-        })
-        .then(response => {
-            console.log("API Response Status:", response.status); // Log status code
-            if (response.ok) {
-                return response.json();  // Parse JSON if response is okay
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://upfile-five.vercel.app/api/file", true);
+
+        // Define what to do when request is completed
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                console.log("API Data:", response); // Log the API response
+
+                if (response.download) {
+                    document.getElementById('responseMessage').textContent = "Upload successful!";
+                    const downloadLink = document.getElementById('downloadLink');
+                    downloadLink.href = response.download;
+                    downloadLink.style.display = "block"; // Show the download link
+                } else {
+                    document.getElementById('responseMessage').textContent = "Upload failed. Please try again.";
+                }
             } else {
-                throw new Error('Failed to upload file. Status code: ' + response.status);
+                document.getElementById('responseMessage').textContent = "Error uploading file. Please try again.";
+                console.error("Error uploading file, status code:", xhr.status);
             }
-        })
-        .then(data => {
-            console.log("API Data:", data); // Log the data from the response
-            if (data.download) {
-                document.getElementById('responseMessage').textContent = "Upload successful!";
-                const downloadLink = document.getElementById('downloadLink');
-                downloadLink.href = data.download;
-                downloadLink.style.display = "block"; // Show the download link
-            } else {
-                document.getElementById('responseMessage').textContent = "Upload failed. Please try again.";
-            }
-        })
-        .catch(error => {
+        };
+
+        // Define what to do in case of error
+        xhr.onerror = function() {
             document.getElementById('responseMessage').textContent = "Error uploading file. Please try again.";
-            console.error('Error uploading file:', error);
-        });
+            console.error("Request failed");
+        };
+
+        // Send the form data
+        xhr.send(formData);
     });
 </script>
 
 </body>
 </html>
-
