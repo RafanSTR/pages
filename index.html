@@ -94,8 +94,12 @@
             body: formData,
         })
         .then(response => {
-            console.log("API Response:", response); // Log the response object
-            return response.json();
+            console.log("API Response Status:", response.status); // Log status code
+            if (response.ok) {
+                return response.json();  // Parse JSON if response is okay
+            } else {
+                throw new Error('Failed to upload file. Status code: ' + response.status);
+            }
         })
         .then(data => {
             console.log("API Data:", data); // Log the data from the response
@@ -117,3 +121,4 @@
 
 </body>
 </html>
+
