@@ -140,7 +140,7 @@
       formData.append("file", file);
       
       try {
-        const apiUrl = "https://upfile.autsc.my.id/api/file";
+        const apiUrl = "http://upfile.autsc.my.id:5000/api/file";
         const response = await fetch(apiUrl, {
           method: "POST",
           body: formData,
