@@ -41,6 +41,7 @@
       cursor: pointer;
       border-radius: 5px;
       margin-top: 10px;
+      transition: background 0.3s;
     }
     button:hover {
       background-color: #0056b3;
@@ -101,9 +102,13 @@
       cursor: pointer;
       border-radius: 5px;
       margin-top: 10px;
+      transition: background 0.3s;
     }
     .copy-button:hover {
       background-color: #218838;
+    }
+    .copied {
+      background-color: #ffc107 !important;
     }
   </style>
 </head>
@@ -118,7 +123,7 @@
     <div class="link-container" id="linkContainer">
       <p>Your file has been uploaded successfully:</p>
       <a id="downloadLink" href="#" target="_blank"></a>
-      <button class="copy-button" id="copyButton" onclick="copyLink()">Copy Link</button>
+      <button class="copy-button" id="copyButton" onclick="copyLink(this)">Copy Link</button>
     </div>
   </div>
 
@@ -134,7 +139,6 @@
       
       const file = fileInput.files[0];
       if (!file) {
-        alert("Please select a file to upload.");
         loading.style.display = "none";
         return;
       }
@@ -161,22 +165,21 @@
           downloadAnchor.href = result.download;
           downloadAnchor.textContent = result.download;
           linkContainer.style.display = "block";
-        } else {
-          alert("Unexpected response format.");
         }
-      } catch (error) {
-        alert("Upload failed: " + error.message);
-      }
+      } catch (error) {}
       
       loading.style.display = "none";
     }
 
-    function copyLink() {
+    function copyLink(button) {
       const link = document.getElementById("downloadLink").href;
       navigator.clipboard.writeText(link).then(() => {
-        alert("Link copied to clipboard!");
-      }).catch(err => {
-        alert("Failed to copy link.");
+        button.textContent = "Copied!";
+        button.classList.add("copied");
+        setTimeout(() => {
+          button.textContent = "Copy Link";
+          button.classList.remove("copied");
+        }, 2000);
       });
     }
   </script>
