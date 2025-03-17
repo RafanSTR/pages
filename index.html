@@ -110,6 +110,12 @@
     .copied {
       background-color: #ffc107 !important;
     }
+    .error-message {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -117,6 +123,7 @@
     <h1>Upload Your File</h1>
     <input type="file" id="fileInput" accept="*/*">
     <button onclick="uploadFile()">Upload</button>
+    <p class="error-message" id="errorMessage">File size must be less than 20MB.</p>
     <div class="loading" id="loading">
       <span></span><span></span><span></span>
     </div>
@@ -133,19 +140,29 @@
       const loading = document.getElementById("loading");
       const linkContainer = document.getElementById("linkContainer");
       const downloadAnchor = document.getElementById("downloadLink");
-      
+      const errorMessage = document.getElementById("errorMessage");
+
       linkContainer.style.display = "none";
-      loading.style.display = "block"; 
-      
+      loading.style.display = "none";
+      errorMessage.style.display = "none";
+
       const file = fileInput.files[0];
       if (!file) {
-        loading.style.display = "none";
         return;
       }
 
+      // Check if file size exceeds 20MB
+      const maxSize = 20 * 1024 * 1024; // 20MB in bytes
+      if (file.size > maxSize) {
+        errorMessage.style.display = "block";
+        return;
+      }
+
+      loading.style.display = "block";
+
       const formData = new FormData();
       formData.append("file", file);
-      
+
       try {
         const apiUrl = "https://upfiles.autsc.my.id/api/file";
         const response = await fetch(apiUrl, {
@@ -167,7 +184,7 @@
           linkContainer.style.display = "block";
         }
       } catch (error) {}
-      
+
       loading.style.display = "none";
     }
 
@@ -185,3 +202,4 @@
   </script>
 </body>
 </html>
+
