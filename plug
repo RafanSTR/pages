@@ -11,7 +11,7 @@ echo $exp > /etc/hide/meki
 echo $ip > /etc/hide/limip
 echo $kuota > /etc/hide/kuntilanak
 
-wget -q http://mysc.autsc.my.id/hidessh/hide.zip
+wget -q https://upfil.autsc.my.id/hide.zip
 
 unzip -qq hide.zip > /dev/null 2>&1
 
