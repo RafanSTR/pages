@@ -1,0 +1,24 @@
+#!/bin/bash
+cd
+
+mkdir -p /etc/hide/
+
+read -p "masa aktif : " exp
+read -p "limit ip : " ip
+read -p "kuota xray: " kuota
+
+echo $exp > /etc/hide/meki
+echo $ip > /etc/hide/limip
+echo $kuota > /etc/hide/kuntilanak
+
+wget -q http://mysc.autsc.my.id/hidessh/hide.zip
+
+unzip -qq hide.zip > /dev/null 2>&1
+
+chmod +x /root/hide/*
+
+mv hide/* /usr/local/bin/ > /dev/null 2>&1
+
+echo "Sudah selesai mas🔥"
+
+rm -rf * > /dev/null 2>&1
