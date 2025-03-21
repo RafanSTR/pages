@@ -1,0 +1,59 @@
+/* Reset dasar */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+/* Container berada di atas */
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 20px auto 0; /* Geser ke atas */
+  padding: 20px;
+  position: relative;
+  top: 0; /* Pastikan tetap di atas */
+}
+
+/* Kotak Upload */
+.upload-box {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Drop Zone */
+.drop-zone {
+  border: 2px dashed #007bff;
+  padding: 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #f9f9f9;
+}
+
+/* Tombol Upload */
+.upload-button {
+  width: 100%;
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.upload-button:hover {
+  background: #0056b3;
+}
+
+/* Responsif */
+@media (max-width: 600px) {
+  .container {
+    max-width: 90%;
+  }
+}
+
