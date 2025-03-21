@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("file", file);
 
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "/upload", true);
+    xhr.open("POST", "https://upfiles.autsc.my.id/api/file", true);
 
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable) {
