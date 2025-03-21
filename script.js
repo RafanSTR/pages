@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const errorText = errorMessage.querySelector("p");
   const successMessage = document.getElementById("success-message");
   const downloadLink = document.getElementById("download-link");
-  const copyButton = document.getElementById("copy-button");
   const progressContainer = document.getElementById("progress-container");
   const progressBar = document.getElementById("progress-bar");
   const progressText = document.getElementById("progress-text");
@@ -29,14 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     progressContainer.style.display = "none";
     progressBar.style.width = "0%";
     progressText.textContent = "0%";
-    downloadLink.textContent = ""; // Hapus link saat reset
-    downloadLink.href = "#";
   }
-
-  // Saat memilih file baru, reset tampilan
-  fileInput.addEventListener("change", () => {
-    resetUI();
-  });
 
   uploadButton.addEventListener("click", () => {
     const file = fileInput.files[0];
@@ -57,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("file", file);
 
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://upfiles.autsc.my.id/api/file", true);
+    xhr.open("POST", "/upload", true);
 
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable) {
@@ -84,15 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     xhr.send(formData);
-  });
-
-  // Tombol copy link ke clipboard
-  copyButton.addEventListener("click", () => {
-    if (downloadLink.textContent) {
-      navigator.clipboard.writeText(downloadLink.textContent).then(() => {
-        alert("Link copied to clipboard!");
-      });
-    }
   });
 });
 
