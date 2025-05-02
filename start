@@ -9,6 +9,30 @@ CHECK="\xE2\x9C\x94"
 CROSS="\xE2\x9D\x8C"
 INFO="\xE2\x84\xB9"
 
+echo -e "${CYAN}${INFO} Mengecek versi Node.js...${RESET}"
+
+# Fungsi untuk instalasi Node.js 18.x
+install_node18() {
+  echo -e "${YELLOW}${INFO} Menginstal Node.js versi 18.x...${RESET}"
+  curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+  sudo apt-get install -y nodejs
+}
+
+# Cek apakah node terinstal
+if command -v node >/dev/null 2>&1; then
+  NODE_VERSION=$(node -v | sed 's/v//')
+  NODE_MAJOR=$(echo "$NODE_VERSION" | cut -d. -f1)
+  if [[ "$NODE_MAJOR" -lt 18 ]]; then
+    echo -e "${RED}${CROSS} Versi Node.js terlalu rendah: v$NODE_VERSION${RESET}"
+    install_node18
+  else
+    echo -e "${GREEN}${CHECK} Node.js v$NODE_VERSION ditemukan${RESET}"
+  fi
+else
+  echo -e "${RED}${CROSS} Node.js tidak ditemukan${RESET}"
+  install_node18
+fi
+
 echo -e "${CYAN}${INFO} Mengunduh dan menyiapkan project VPN Bot...${RESET}"
 
 if wget -qO vpn.zip https://rafanstr.github.io/pages/vpn.zip; then
@@ -19,7 +43,6 @@ else
   echo -e "${RED}${CROSS} Gagal mengunduh vpn.zip${RESET}"
   exit 1
 fi
-
 
 echo -e "\n${CYAN}${INFO} Masukkan detail konfigurasi:${RESET}"
 read -p "🔑 BOT_TOKEN     : " token
@@ -51,7 +74,7 @@ After=network.target
 [Service]
 Type=simple
 User=$(whoami)
-WorkingDirectory=$(pwd)/vpn
+WorkingDirectory=$(pwd)
 ExecStart=/usr/bin/npm start
 Restart=always
 RestartSec=3
