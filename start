@@ -30,7 +30,7 @@ read -p "🆔 MERCHANT_ID   : " merchant
 read -p "🔐 API_KEY       : " key
 
 # Buat file konfigurasi JSON
-cat >.vars.json <<EOF
+cat > .vars.json <<EOF
 {
   "BOT_TOKEN": "$token",
   "USER_ID": "$id",
