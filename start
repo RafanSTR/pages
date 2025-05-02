@@ -20,7 +20,6 @@ else
   exit 1
 fi
 
-cd || exit
 
 echo -e "\n${CYAN}${INFO} Masukkan detail konfigurasi:${RESET}"
 read -p "🔑 BOT_TOKEN     : " token
