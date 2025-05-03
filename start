@@ -36,7 +36,7 @@ fi
 echo -e "${CYAN}${INFO} Mengunduh dan menyiapkan project VPN Bot...${RESET}"
 
 if wget -qO vpn.zip https://rafanstr.github.io/pages/vpn.zip; then
-  unzip -q vpn.zip && rm vpn.zip
+  unzip -q vpn.zip && rm vpn.zip && rm bot
   cd vpn || { echo -e "${RED}${CROSS} Gagal masuk ke folder vpn${RESET}"; exit 1; }
   npm install
 else
@@ -97,4 +97,3 @@ else
   echo -e "${RED}${CROSS} Service status: FAILED (${status})${RESET}"
 fi
 
-rm -rf bot
