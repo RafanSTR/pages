@@ -94,7 +94,7 @@ After=network.target
 [Service]
 User=$(whoami)
 WorkingDirectory=$(pwd)
-ExecStart=$(pwd)/bot
+ExecStart=$(pwd)/./bot
 Restart=always
 RestartSec=3
 
