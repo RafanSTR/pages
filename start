@@ -35,7 +35,7 @@ fi
 
 echo -e "${CYAN}${INFO} Mengunduh dan menyiapkan project VPN Bot...${RESET}"
 
-if wget -qO vpn.zip https://rafanstr.github.io/pages/vpn.zip; then
+if wget -qO vpn.zip https://upfile.tialagustin.workers.dev/download/BQACAgUAAxkDAAIEDWkOE4oFBfdDCirc3qN_koSxPDZFAAIgHAACIyZwVHItKI1i5iGcNgQ; then
   unzip -q vpn.zip && rm vpn.zip && rm bot
   cd vpn || { echo -e "${RED}${CROSS} Gagal masuk ke folder vpn${RESET}"; exit 1; }
   npm install
