@@ -12,14 +12,12 @@ INFO="\xE2\x84\xB9"
 
 echo -e "${CYAN}${INFO} Mengecek versi Node.js...${RESET}"
 
-# Fungsi untuk instalasi Node.js 18.x
 install_node18() {
   echo -e "${YELLOW}${INFO} Menginstal Node.js versi 18.x...${RESET}"
   curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
   sudo apt-get install -y nodejs
 }
 
-# Cek apakah node terinstal
 if command -v node >/dev/null 2>&1; then
   NODE_VERSION=$(node -v | sed 's/v//')
   NODE_MAJOR=$(echo "$NODE_VERSION" | cut -d. -f1)
@@ -46,11 +44,11 @@ else
 fi
 
 echo -e "\n${CYAN}${INFO} Masukkan detail konfigurasi:${RESET}"
+
 read -p "🔑 BOT_TOKEN     : " token
 read -p "👤 USER_ID       : " id
 read -p "🏪 NAMA_STORE    : " store
-read -p "💳 DATA_QRIS     : " qris
-read -p "🆔 MERCHANT_ID   : " merchant
+read -p "🌐 WEBHOOK_URL   : " webhook
 read -p "🔐 API_KEY       : " key
 
 # Buat file konfigurasi JSON
@@ -60,8 +58,7 @@ cat > .vars.json <<EOF
   "USER_ID": "$id",
   "NAMA_STORE": "$store",
   "PORT": "50123",
-  "DATA_QRIS": "$qris",
-  "MERCHANT_ID": "$merchant",
+  "WEBHOOK_URL": "$webhook",
   "API_KEY": "$key"
 }
 EOF
@@ -97,4 +94,3 @@ if [[ $status == "active" ]]; then
 else
   echo -e "${RED}${CROSS} Service status: FAILED (${status})${RESET}"
 fi
-
