@@ -100,7 +100,7 @@ pre.req-line{color:var(--accent)}
         <table class="params">
           <tr><th>Aturan</th><th>Keterangan</th></tr>
           <tr><td>Username</td><td>Hanya huruf &amp; angka (regex <code>^[a-zA-Z0-9]+$</code>), tidak boleh duplikat.</td></tr>
-          <tr><td>Angka (quota / exp / limitip / timer)</td><td>Harus numerik murni, dikirim sebagai string digit.</td></tr>
+          <tr><td>Angka (quota / exp / limitip)</td><td>Harus numerik murni, dikirim sebagai string digit.</td></tr>
           <tr><td>Kuota</td><td>Dalam satuan GB, dikonversi otomatis ke byte di server.</td></tr>
         </table>
         <h3 class="sub">Format respons</h3>
@@ -172,54 +172,50 @@ const groups = [
         ["limitip","number",1,"Maksimal IP bersamaan (1&ndash;10)"]
       ],
       example:"/create-ssh?auth=meki&user=eko&password=rahasia123&exp=30&limitip=2",
-      success:{code:200, body:{status:"success",data:{username:"eko",password:"rahasia123",host:"domain-anda.com",ip:"203.0.113.10",ports:{openSSH:"22",dropbear:"143, 109",dropbearWS:"443, 109",sshUDP:"1-65535",ovpnWSSSL:"443",ovpnSSL:"443",ovpnTCP:"1194",ovpnUDP:"2200",badVPN:"7100, 7300",sshWS:"80, 8080",sshWSSSL:"443"},formats:{port80:"domain-anda.com:80@eko:rahasia123",port443:"domain-anda.com:443@eko:rahasia123",udp:"domain-anda.com:1-65535@eko:rahasia123"},ovpnDownload:"http://domain.com/***",saveLink:"http://domain.com/***",created:"2026-09-24",expired:"2026-10-24",isp:"Contoh ISP",city:"Jakarta",limitIP:"2",dashboard_url:"http://domain.com/***","zivpn_password (opsional)":"eko-a1b"}}},
+      success:{code:200, body:{status:"success",data:{username:"eko",password:"rahasia123",host:"domain-anda.com",ip:"203.0.113.10",ports:{openSSH:"22",dropbear:"143, 109",dropbearWS:"443, 109",sshUDP:"1-65535",ovpnWSSSL:"443",ovpnSSL:"443",ovpnTCP:"1194",ovpnUDP:"2200",badVPN:"7100, 7300",sshWS:"80, 8080",sshWSSSL:"443"},formats:{port80:"domain-anda.com:80@eko:rahasia123",port443:"domain-anda.com:443@eko:rahasia123",udp:"domain-anda.com:1-65535@eko:rahasia123"},ovpnDownload:"http://domain.com/***",saveLink:"http://domain.com/***",created:"2026-09-24",expired:"2026-10-24",isp:"Contoh ISP",city:"Jakarta",limitIP:"2",dashboard_url:"http://domain.com/***"}}},
       errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"SSH password must be provided via API parameter"}],[403,{status:"failed",message:"Creating system users is not allowed"}],[409,{status:"failed",message:"Username already exists"}]]
     }
   ]},
   { id:"trial", title:"Trial Akun", items: [
     {
       id:"trial-vmess", method:"GET", path:"/trial-vmess",
-      desc:"Membuat akun VMess trial otomatis (username acak TrialXXXX) dengan durasi dalam menit.",
+      desc:"Membuat akun VMess trial otomatis (username acak TrialXXXX) dengan masa aktif terbatas.",
       params:[
-        ["auth","string",1,"Auth key server"],
-        ["timer","number",0,"Durasi trial dalam menit (default 60)"]
+        ["auth","string",1,"Auth key server"]
       ],
-      example:"/trial-vmess?auth=meki&timer=60",
+      example:"/trial-vmess?auth=meki",
       success:{code:200, body:{status:"success",data:{user:"Trial4821",uuid:"c0a8...-90fe",expired:"60 minutes",domain:"domain-anda.com",ws_tls:"vmess://eyJ2Ijoi...",ws_none_tls:"vmess://eyJ2Ijoi...",grpc:"vmess://eyJ2Ijoi...",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
-      errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Timer must be greater than 0"}]]
+      errors:[[401,{status:"failed",message:"Unauthorized"}]]
     },
     {
       id:"trial-vless", method:"GET", path:"/trial-vless",
-      desc:"Membuat akun VLESS trial otomatis dengan durasi dalam menit.",
+      desc:"Membuat akun VLESS trial otomatis dengan masa aktif terbatas.",
       params:[
-        ["auth","string",1,"Auth key server"],
-        ["timer","number",0,"Durasi trial dalam menit (default 60)"]
+        ["auth","string",1,"Auth key server"]
       ],
-      example:"/trial-vless?auth=meki&timer=30",
-      success:{code:200, body:{status:"success",data:{user:"Trial1190",uuid:"7b21...-44aa",expired:"30 minutes",domain:"domain-anda.com",ws_tls:"vless://7b21...#Trial1190-TLS",ws_none_tls:"vless://7b21...#Trial1190-NoneTLS",grpc:"vless://7b21...#Trial1190-gRPC",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
-      errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Timer must be greater than 0"}]]
+      example:"/trial-vless?auth=meki",
+      success:{code:200, body:{status:"success",data:{user:"Trial1190",uuid:"7b21...-44aa",expired:"60 minutes",domain:"domain-anda.com",ws_tls:"vless://7b21...#Trial1190-TLS",ws_none_tls:"vless://7b21...#Trial1190-NoneTLS",grpc:"vless://7b21...#Trial1190-gRPC",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
+      errors:[[401,{status:"failed",message:"Unauthorized"}]]
     },
     {
       id:"trial-trojan", method:"GET", path:"/trial-trojan",
-      desc:"Membuat akun Trojan trial otomatis dengan durasi dalam menit.",
+      desc:"Membuat akun Trojan trial otomatis dengan masa aktif terbatas.",
       params:[
-        ["auth","string",1,"Auth key server"],
-        ["timer","number",0,"Durasi trial dalam menit (default 60)"]
+        ["auth","string",1,"Auth key server"]
       ],
-      example:"/trial-trojan?auth=meki&timer=45",
-      success:{code:200, body:{status:"success",data:{user:"Trial7734",uuid:"1d5e...-bb02",expired:"45 minutes",domain:"domain-anda.com",ws:"trojan://1d5e...@domain-anda.com:443?...#Trial7734",grpc:"trojan://1d5e...@domain-anda.com:443?mode=gun...#Trial7734",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
-      errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Timer must be greater than 0"}]]
+      example:"/trial-trojan?auth=meki",
+      success:{code:200, body:{status:"success",data:{user:"Trial7734",uuid:"1d5e...-bb02",expired:"60 minutes",domain:"domain-anda.com",ws:"trojan://1d5e...@domain-anda.com:443?...#Trial7734",grpc:"trojan://1d5e...@domain-anda.com:443?mode=gun...#Trial7734",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
+      errors:[[401,{status:"failed",message:"Unauthorized"}]]
     },
     {
       id:"trial-ssh", method:"GET", path:"/trial-ssh",
       desc:"Membuat akun SSH/OpenVPN trial otomatis (username TrialXXXXX, password tetap 1, limit IP 1).",
       params:[
-        ["auth","string",1,"Auth key server"],
-        ["timer","number",0,"Durasi trial dalam menit (default 60)"]
+        ["auth","string",1,"Auth key server"]
       ],
-      example:"/trial-ssh?auth=meki&timer=60",
-      success:{code:200, body:{status:"success",data:{username:"Trial58210",password:"1",host:"domain-anda.com",ip:"203.0.113.10",ports:{openSSH:"22",dropbear:"143, 109",dropbearWS:"443, 109",sshUDP:"1-65535",ovpnWSSSL:"443",ovpnSSL:"443",ovpnTCP:"1194",ovpnUDP:"2200",badVPN:"7100, 7300",sshWS:"80, 8080",sshWSSSL:"443"},formats:{port80:"domain-anda.com:80@Trial58210:1",port443:"domain-anda.com:443@Trial58210:1",udp:"domain-anda.com:1-65535@Trial58210:1"},ovpnDownload:"http://domain.com/***",saveLink:"http://domain.com/***",created:"2026-09-24",expired:"60 Minutes",isp:"Contoh ISP",city:"Jakarta",dashboard_url:"http://domain.com/***","zivpn_password (opsional)":"Trial58210-x9k"}}},
-      errors:[[401,{status:"failed",message:"Unauthorized: IP not allowed or expired"}],[400,{status:"failed",message:"Timer must be a positive number"}]]
+      example:"/trial-ssh?auth=meki",
+      success:{code:200, body:{status:"success",data:{username:"Trial58210",password:"1",host:"domain-anda.com",ip:"203.0.113.10",ports:{openSSH:"22",dropbear:"143, 109",dropbearWS:"443, 109",sshUDP:"1-65535",ovpnWSSSL:"443",ovpnSSL:"443",ovpnTCP:"1194",ovpnUDP:"2200",badVPN:"7100, 7300",sshWS:"80, 8080",sshWSSSL:"443"},formats:{port80:"domain-anda.com:80@Trial58210:1",port443:"domain-anda.com:443@Trial58210:1",udp:"domain-anda.com:1-65535@Trial58210:1"},ovpnDownload:"http://domain.com/***",saveLink:"http://domain.com/***",created:"2026-09-24",expired:"60 Minutes",isp:"Contoh ISP",city:"Jakarta",dashboard_url:"http://domain.com/***"}}},
+      errors:[[401,{status:"failed",message:"Unauthorized: IP not allowed or expired"}]]
     }
   ]},
   { id:"renew", title:"Perpanjang Akun", items: [
