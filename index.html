@@ -129,7 +129,7 @@ const groups = [
         ["limitip","number",1,"Maksimal IP bersamaan"],
         ["exp","number",1,"Masa aktif dalam hari"]
       ],
-      example:"/create-vmess?auth=meki&user=budi01&quota=50&limitip=3&exp=30",
+      example:"/create-vmess?auth=AUTH_KEY_ANDA&user=budi01&quota=50&limitip=3&exp=30",
       success:{code:200, body:{status:"success",data:{user:"budi01",uuid:"3f7c2e10-...-a1b2",expired:"2026-10-24",domain:"domain-anda.com",ws_tls:"vmess://eyJ2Ijoi...",ws_none_tls:"vmess://eyJ2Ijoi...",grpc:"vmess://eyJ2Ijoi...",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
       errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Username can only contain letters and numbers"}],[409,{status:"failed",message:"Username already exists"}]]
     },
@@ -143,7 +143,7 @@ const groups = [
         ["limitip","number",1,"Maksimal IP bersamaan"],
         ["exp","number",1,"Masa aktif dalam hari"]
       ],
-      example:"/create-vless?auth=meki&user=citra&quota=30&limitip=2&exp=30",
+      example:"/create-vless?auth=AUTH_KEY_ANDA&user=citra&quota=30&limitip=2&exp=30",
       success:{code:200, body:{status:"success",data:{user:"citra",uuid:"9a11...-cd44",expired:"2026-10-24",domain:"domain-anda.com",ws_tls:"vless://9a11...#citra",ws_none_tls:"vless://9a11...#citra",grpc:"vless://9a11...#citra",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
       errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Quota must be numeric"}],[409,{status:"failed",message:"Username already exists"}]]
     },
@@ -157,7 +157,7 @@ const groups = [
         ["limitip","number",1,"Maksimal IP bersamaan"],
         ["exp","number",1,"Masa aktif dalam hari"]
       ],
-      example:"/create-trojan?auth=meki&user=dimas&quota=40&limitip=3&exp=30",
+      example:"/create-trojan?auth=AUTH_KEY_ANDA&user=dimas&quota=40&limitip=3&exp=30",
       success:{code:200, body:{status:"success",data:{user:"dimas",uuid:"55bd...-77ee",expired:"2026-10-24",domain:"domain-anda.com",ws:"trojan://55bd...@domain-anda.com:443?...#dimas",grpc:"trojan://55bd...@domain-anda.com:443?mode=gun...#dimas",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
       errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Expiration must be numeric"}],[409,{status:"failed",message:"Username already exists"}]]
     },
@@ -171,7 +171,7 @@ const groups = [
         ["exp","number",1,"Masa aktif dalam hari (1&ndash;3650)"],
         ["limitip","number",1,"Maksimal IP bersamaan (1&ndash;10)"]
       ],
-      example:"/create-ssh?auth=meki&user=eko&password=rahasia123&exp=30&limitip=2",
+      example:"/create-ssh?auth=AUTH_KEY_ANDA&user=eko&password=rahasia123&exp=30&limitip=2",
       success:{code:200, body:{status:"success",data:{username:"eko",password:"rahasia123",host:"domain-anda.com",ip:"203.0.113.10",ports:{openSSH:"22",dropbear:"143, 109",dropbearWS:"443, 109",sshUDP:"1-65535",ovpnWSSSL:"443",ovpnSSL:"443",ovpnTCP:"1194",ovpnUDP:"2200",badVPN:"7100, 7300",sshWS:"80, 8080",sshWSSSL:"443"},formats:{port80:"domain-anda.com:80@eko:rahasia123",port443:"domain-anda.com:443@eko:rahasia123",udp:"domain-anda.com:1-65535@eko:rahasia123"},ovpnDownload:"http://domain.com/***",saveLink:"http://domain.com/***",created:"2026-09-24",expired:"2026-10-24",isp:"Contoh ISP",city:"Jakarta",limitIP:"2",dashboard_url:"http://domain.com/***"}}},
       errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"SSH password must be provided via API parameter"}],[403,{status:"failed",message:"Creating system users is not allowed"}],[409,{status:"failed",message:"Username already exists"}]]
     }
@@ -183,7 +183,7 @@ const groups = [
       params:[
         ["auth","string",1,"Auth key server"]
       ],
-      example:"/trial-vmess?auth=meki",
+      example:"/trial-vmess?auth=AUTH_KEY_ANDA",
       success:{code:200, body:{status:"success",data:{user:"Trial4821",uuid:"c0a8...-90fe",expired:"60 minutes",domain:"domain-anda.com",ws_tls:"vmess://eyJ2Ijoi...",ws_none_tls:"vmess://eyJ2Ijoi...",grpc:"vmess://eyJ2Ijoi...",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
       errors:[[401,{status:"failed",message:"Unauthorized"}]]
     },
@@ -193,7 +193,7 @@ const groups = [
       params:[
         ["auth","string",1,"Auth key server"]
       ],
-      example:"/trial-vless?auth=meki",
+      example:"/trial-vless?auth=AUTH_KEY_ANDA",
       success:{code:200, body:{status:"success",data:{user:"Trial1190",uuid:"7b21...-44aa",expired:"60 minutes",domain:"domain-anda.com",ws_tls:"vless://7b21...#Trial1190-TLS",ws_none_tls:"vless://7b21...#Trial1190-NoneTLS",grpc:"vless://7b21...#Trial1190-gRPC",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
       errors:[[401,{status:"failed",message:"Unauthorized"}]]
     },
@@ -203,7 +203,7 @@ const groups = [
       params:[
         ["auth","string",1,"Auth key server"]
       ],
-      example:"/trial-trojan?auth=meki",
+      example:"/trial-trojan?auth=AUTH_KEY_ANDA",
       success:{code:200, body:{status:"success",data:{user:"Trial7734",uuid:"1d5e...-bb02",expired:"60 minutes",domain:"domain-anda.com",ws:"trojan://1d5e...@domain-anda.com:443?...#Trial7734",grpc:"trojan://1d5e...@domain-anda.com:443?mode=gun...#Trial7734",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
       errors:[[401,{status:"failed",message:"Unauthorized"}]]
     },
@@ -213,7 +213,7 @@ const groups = [
       params:[
         ["auth","string",1,"Auth key server"]
       ],
-      example:"/trial-ssh?auth=meki",
+      example:"/trial-ssh?auth=AUTH_KEY_ANDA",
       success:{code:200, body:{status:"success",data:{username:"Trial58210",password:"1",host:"domain-anda.com",ip:"203.0.113.10",ports:{openSSH:"22",dropbear:"143, 109",dropbearWS:"443, 109",sshUDP:"1-65535",ovpnWSSSL:"443",ovpnSSL:"443",ovpnTCP:"1194",ovpnUDP:"2200",badVPN:"7100, 7300",sshWS:"80, 8080",sshWSSSL:"443"},formats:{port80:"domain-anda.com:80@Trial58210:1",port443:"domain-anda.com:443@Trial58210:1",udp:"domain-anda.com:1-65535@Trial58210:1"},ovpnDownload:"http://domain.com/***",saveLink:"http://domain.com/***",created:"2026-09-24",expired:"60 Minutes",isp:"Contoh ISP",city:"Jakarta",dashboard_url:"http://domain.com/***"}}},
       errors:[[401,{status:"failed",message:"Unauthorized: IP not allowed or expired"}]]
     }
@@ -223,7 +223,7 @@ const groups = [
       id:"renws", method:"GET", path:"/renws",
       desc:"Memperpanjang akun VMess dan mereset pemakaian kuotanya ke 0.",
       params:[["auth","string",1,"Auth key server"],["num","string",1,"Username akun VMess"],["exp","number",1,"Jumlah hari yang ditambahkan"]],
-      example:"/renws?auth=meki&num=budi01&exp=30",
+      example:"/renws?auth=AUTH_KEY_ANDA&num=budi01&exp=30",
       success:{code:200, body:{status:"success",data:{username:"budi01",previous_expiry:"2026-10-24",days_added:30,expired:"2026-11-23",main_updated:true,grpc_updated:true}}},
       errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Num parameter is required"}],[500,{status:"failed",message:"User budi01 expiration not found with pattern ###"}]]
     },
@@ -231,7 +231,7 @@ const groups = [
       id:"renvl", method:"GET", path:"/renvl",
       desc:"Memperpanjang akun VLESS dan mereset pemakaian kuotanya ke 0.",
       params:[["auth","string",1,"Auth key server"],["num","string",1,"Username akun VLESS"],["exp","number",1,"Jumlah hari yang ditambahkan"]],
-      example:"/renvl?auth=meki&num=citra&exp=15",
+      example:"/renvl?auth=AUTH_KEY_ANDA&num=citra&exp=15",
       success:{code:200, body:{status:"success",data:{username:"citra",previous_expiry:"2026-10-24",days_added:15,expired:"2026-11-08",main_updated:true,grpc_updated:true}}},
       errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Exp parameter must be numeric"}],[500,{status:"failed",message:"User citra not found in config"}]]
     },
@@ -239,7 +239,7 @@ const groups = [
       id:"rentr", method:"GET", path:"/rentr",
       desc:"Memperpanjang akun Trojan dan mereset pemakaian kuotanya ke 0.",
       params:[["auth","string",1,"Auth key server"],["num","string",1,"Username akun Trojan"],["exp","number",1,"Jumlah hari yang ditambahkan"]],
-      example:"/rentr?auth=meki&num=dimas&exp=30",
+      example:"/rentr?auth=AUTH_KEY_ANDA&num=dimas&exp=30",
       success:{code:200, body:{status:"success",data:{username:"dimas",previous_expiry:"2026-10-24",days_added:30,expired:"2026-11-23",main_updated:true,grpc_updated:true}}},
       errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Num parameter is required"}],[500,{status:"failed",message:"User dimas expiration not found with pattern #!"}]]
     },
@@ -247,7 +247,7 @@ const groups = [
       id:"rensh", method:"GET", path:"/rensh",
       desc:"Memperpanjang masa aktif akun SSH (mengubah expiry date sistem lewat chage). Catatan: endpoint ini selalu membalas HTTP 200, status sukses/gagal dibedakan lewat field status pada body.",
       params:[["auth","string",1,"Auth key server"],["num","string",1,"Username akun SSH"],["exp","number",1,"Jumlah hari yang ditambahkan"]],
-      example:"/rensh?auth=meki&num=eko&exp=30",
+      example:"/rensh?auth=AUTH_KEY_ANDA&num=eko&exp=30",
       success:{code:200, body:{status:"success",data:{username:"eko",previous_expiry:"2026-10-24",days_added:30,expired:"2026-11-23",main_updated:true,grpc_updated:false}}},
       errors:[[200,{status:"failed",message:"Num (username) parameter is required"}],[200,{status:"failed",message:"Exp parameter must be numeric"}],[200,{status:"failed",message:"Failed to renew SSH user: ..."}]]
     }
@@ -279,12 +279,12 @@ function renderErrors(errors){
 function renderEndpoint(ep){
   return `
   <div class="card" id="${ep.id}">
-    <div class="card-head"><span class="method">${ep.method}</span><span class="path">${ep.path}</span></div>
+    <div class="card-head"><span class="method">${esc(ep.method)}</span><span class="path">${esc(ep.path)}</span></div>
     <div class="card-body">
       <p class="desc">${ep.desc}</p>
       ${renderParams(ep.params)}
       <h3 class="sub">Contoh Request</h3>
-      <pre class="req-line">GET ${ep.example}</pre>
+      <pre class="req-line">GET ${esc(ep.example)}</pre>
       <h3 class="sub">Contoh Response</h3>
       <div class="resp-label"><span class="code c-200">${ep.success.code}</span></div>
       <pre>${syntaxJSON(ep.success.body)}</pre>
@@ -298,7 +298,7 @@ const endpointsEl = document.getElementById('endpoints');
 let navHtml = `<h4>Umum</h4><a href="#auth"><span class="m">i</span>Autentikasi</a>`;
 groups.forEach(g => {
   navHtml += `<h4>${g.title}</h4>`;
-  g.items.forEach(ep => navHtml += `<a href="#${ep.id}"><span class="m">${ep.method}</span>${ep.path}</a>`);
+  g.items.forEach(ep => navHtml += `<a href="#${ep.id}"><span class="m">${esc(ep.method)}</span>${esc(ep.path)}</a>`);
 });
 navEl.innerHTML = navHtml;
 
