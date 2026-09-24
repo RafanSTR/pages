@@ -1,230 +1,315 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Upload File</title>
-  <script type='text/javascript' src='//pl26147198.effectiveratecpm.com/5a/24/d5/5a24d58db802861e7b2af21604bc2eda.js'></script>
-</head>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start; /* Mengubah ke flex-start agar container di atas */
-      height: 100vh;
-      padding-top: 20px; /* Memberikan jarak dari atas */
-    }
-    .container {
-      background-color: #ffffff;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-      text-align: center;
-      width: 400px; /* Lebar container diperbesar */
-      margin: 0 auto; /* Tetap di tengah secara horizontal */
-    }
-    h1 {
-      font-size: 20px;
-      margin-bottom: 15px;
-      color: #333;
-    }
-    input[type="file"] {
-      padding: 8px;
-      font-size: 14px;
-      width: 100%; /* Lebar input file menyesuaikan container */
-      box-sizing: border-box; /* Agar padding tidak mempengaruhi lebar */
-    }
-    button {
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 14px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-top: 10px;
-      transition: background 0.3s;
-      width: 100%; /* Tombol menyesuaikan lebar container */
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .loading {
-      display: none;
-      margin-top: 15px;
-    }
-    .loading span {
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      margin: 0 2px;
-      background-color: #007BFF;
-      border-radius: 50%;
-      animation: bounce 1.4s infinite ease-in-out both;
-    }
-    .loading span:nth-child(1) {
-      animation-delay: -0.32s;
-    }
-    .loading span:nth-child(2) {
-      animation-delay: -0.16s;
-    }
-    @keyframes bounce {
-      0%, 80%, 100% {
-        transform: scale(0);
-      }
-      40% {
-        transform: scale(1);
-      }
-    }
-    .link-container {
-      margin-top: 15px;
-      display: none;
-      text-align: center;
-    }
-    .link-container a {
-      display: inline-block;
-      background: #f8f9fa;
-      border: 1px solid #007BFF;
-      padding: 8px;
-      border-radius: 5px;
-      color: #007BFF;
-      font-weight: bold;
-      text-decoration: none;
-      font-size: 14px;
-      word-break: break-word;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .copy-button {
-      background-color: #28a745;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      font-size: 14px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-top: 10px;
-      transition: background 0.3s;
-      width: 100%; /* Tombol menyesuaikan lebar container */
-    }
-    .copy-button:hover {
-      background-color: #218838;
-    }
-    .copied {
-      background-color: #ffc107 !important;
-    }
-    .checkmark {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      background-color: #28a745;
-      border-radius: 50%;
-      color: white;
-      font-size: 14px;
-      line-height: 20px;
-      text-align: center;
-      margin-left: 5px;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-    .checkmark.visible {
-      opacity: 1;
-    }
-  </style>
-<head>  
-  <script type='text/javascript' src='//pl26147198.effectiveratecpm.com/5a/24/d5/5a24d58db802861e7b2af21604bc2eda.js'></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dokumentasi API &mdash; VPN Account Manager</title>
+<style>
+:root{
+  --bg:#0b1120; --surface:#101a2b; --surface2:#16233a; --border:#233149;
+  --text:#dce6f2; --dim:#7e90a8; --accent:#2dd4b0; --accent-soft:rgba(45,212,176,.12);
+  --amber:#f2b84b; --red:#f4695f; --blue:#5b9dff; --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;font-size:15px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code,pre{font-family:var(--mono)}
+
+.topbar{position:sticky;top:0;z-index:20;background:rgba(11,17,32,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--border);padding:.9rem 1.25rem;display:flex;align-items:center;gap:.6rem}
+.topbar .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.topbar strong{font-size:.95rem;letter-spacing:.01em}
+.topbar span{color:var(--dim);font-size:.85rem}
+
+.layout{display:flex;max-width:1180px;margin:0 auto}
+nav{width:230px;flex-shrink:0;padding:1.5rem 1rem;position:sticky;top:54px;align-self:flex-start;height:calc(100vh - 54px);overflow-y:auto}
+nav h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);margin:1.1rem 0 .4rem;font-weight:600}
+nav h4:first-child{margin-top:0}
+nav a{display:block;padding:.32rem .5rem;border-radius:6px;color:var(--text);font-size:.86rem;font-family:var(--mono)}
+nav a:hover{background:var(--surface2);text-decoration:none}
+nav a .m{color:var(--dim);font-size:.7rem;margin-right:.4rem}
+
+main{flex:1;min-width:0;padding:1.5rem 1.5rem 4rem}
+
+.hero{padding:1.5rem 0 2rem;border-bottom:1px solid var(--border);margin-bottom:2rem}
+.hero h1{font-size:1.7rem;margin:0 0 .5rem;letter-spacing:-.01em}
+.hero p{color:var(--dim);max-width:640px;margin:0 0 1rem}
+.base-url{display:inline-flex;align-items:center;gap:.5rem;background:var(--surface);border:1px solid var(--border);padding:.55rem .9rem;border-radius:8px;font-family:var(--mono);font-size:.85rem}
+.base-url .tag{color:var(--accent);font-weight:600}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:1.1rem;overflow:hidden;scroll-margin-top:70px}
+.card-head{padding:1rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.method{font-family:var(--mono);font-size:.72rem;font-weight:700;padding:.2rem .55rem;border-radius:5px;background:var(--blue);color:#04101f;letter-spacing:.03em}
+.path{font-family:var(--mono);font-size:.95rem;color:var(--text)}
+.card-body{padding:1.1rem 1.2rem}
+.card-body p.desc{color:var(--dim);margin:0 0 1rem;font-size:.9rem}
+
+h3.sub{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);margin:1.1rem 0 .5rem;font-weight:600}
+h3.sub:first-child{margin-top:0}
+
+table.params{width:100%;border-collapse:collapse;font-size:.83rem}
+table.params th{text-align:left;color:var(--dim);font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;padding:.4rem .5rem;border-bottom:1px solid var(--border)}
+table.params td{padding:.5rem .5rem;border-bottom:1px solid var(--border);vertical-align:top}
+table.params code{color:var(--accent);font-size:.82rem}
+.req{color:var(--red);font-size:.7rem;font-weight:700;letter-spacing:.03em}
+.opt{color:var(--dim);font-size:.7rem}
+
+pre{background:#0a1220;border:1px solid var(--border);border-radius:8px;padding:.85rem 1rem;overflow-x:auto;font-size:.8rem;margin:0}
+pre.req-line{color:var(--accent)}
+.resp-label{display:flex;align-items:center;gap:.5rem;margin:.9rem 0 .4rem}
+.resp-label .code{font-family:var(--mono);font-size:.72rem;font-weight:700;padding:.12rem .45rem;border-radius:4px}
+.c-200{background:rgba(45,212,176,.15);color:var(--accent)}
+.c-4{background:rgba(244,105,95,.15);color:var(--red)}
+
+.jk{color:#8fa8c9}.jv{color:#e6c07b}.js{color:#98c379}.jn{color:#5b9dff}
+
+.footer-note{margin-top:2.5rem;padding-top:1.2rem;border-top:1px solid var(--border);color:var(--dim);font-size:.82rem}
+
+@media (max-width:860px){
+  .layout{flex-direction:column}
+  nav{width:100%;position:static;height:auto;display:flex;flex-wrap:wrap;gap:.2rem 1rem;padding:1rem 1.25rem;border-bottom:1px solid var(--border)}
+  nav h4{display:none}
+  nav a{padding:.2rem 0}
+  main{padding:1.25rem}
+}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>Upload Your File</h1>
-    <input type="file" id="fileInput" accept="*/*">
-    <button onclick="uploadFile()">Upload</button>
-    <div class="loading" id="loading">
-      <span></span><span></span><span></span>
+
+<div class="topbar">
+  <span class="dot"></span>
+  <strong>VPN Account Manager</strong>
+  <span>&middot; Dokumentasi API</span>
+</div>
+
+<div class="layout">
+  <nav id="nav"></nav>
+  <main>
+    <div class="hero">
+      <h1>Dokumentasi API</h1>
+      <p>Referensi lengkap untuk membuat, mencoba (trial), dan memperpanjang akun VMess, VLESS, Trojan, dan SSH melalui HTTP API.</p>
+      <div class="base-url"><span class="tag">BASE URL</span> http://domain-atau-ip-server:6969</div>
     </div>
-    <div class="link-container" id="linkContainer">
-      <p>Your file has been uploaded successfully:</p>
-      <a id="downloadLink" href="#" target="_blank"></a>
-      <button class="copy-button" id="copyButton" onclick="copyLink(this)">Copy Link</button>
-      <span class="checkmark" id="checkmark">✓</span>
+
+    <div class="card" id="auth">
+      <div class="card-head"><span class="method" style="background:var(--amber)">INFO</span><span class="path">Autentikasi &amp; Aturan Umum</span></div>
+      <div class="card-body">
+        <p class="desc">Semua endpoint mewajibkan parameter query <code>auth</code> yang cocok dengan auth key server. Nilai dan cara penyimpanan auth key ini bisa berbeda-beda tergantung konfigurasi masing-masing server. Tanpa parameter ini, server membalas <code>401 Unauthorized</code>.</p>
+        <h3 class="sub">Aturan validasi umum</h3>
+        <table class="params">
+          <tr><th>Aturan</th><th>Keterangan</th></tr>
+          <tr><td>Username</td><td>Hanya huruf &amp; angka (regex <code>^[a-zA-Z0-9]+$</code>), tidak boleh duplikat.</td></tr>
+          <tr><td>Angka (quota / exp / limitip / timer)</td><td>Harus numerik murni, dikirim sebagai string digit.</td></tr>
+          <tr><td>Kuota</td><td>Dalam satuan GB, dikonversi otomatis ke byte di server.</td></tr>
+        </table>
+        <h3 class="sub">Format respons</h3>
+        <p class="desc" style="margin-bottom:0">Semua respons berbentuk JSON dengan pola <code>{"status":"success"|"failed", "data"|"message": ...}</code>.</p>
+      </div>
     </div>
-  </div>
 
-  <script>
-    async function uploadFile() {
-      const fileInput = document.getElementById("fileInput");
-      const loading = document.getElementById("loading");
-      const linkContainer = document.getElementById("linkContainer");
-      const downloadAnchor = document.getElementById("downloadLink");
-      
-      const maxFileSize = 20 * 1024 * 1024; // 20 MB
-      const file = fileInput.files[0];
+    <div id="endpoints"></div>
 
-      if (!file) {
-        alert("Please select a file to upload.");
-        return;
-      }
+    <div class="footer-note">
+      Dibuat untuk didokumentasikan secara statis (GitHub Pages). Ganti nilai contoh (<code>auth</code>, <code>domain</code>, IP, dsb.) sesuai konfigurasi server kamu sendiri.
+    </div>
+  </main>
+</div>
 
-      if (file.size > maxFileSize) {
-        alert("File size exceeds the maximum limit of 20 MB.");
-        return;
-      }
-
-      linkContainer.style.display = "none";
-      loading.style.display = "block"; 
-
-      const formData = new FormData();
-      formData.append("file", file);
-      
-      try {
-        const apiUrl = "https://upfiles.autsc.my.id/api/file";
-        const response = await fetch(apiUrl, {
-          method: "POST",
-          body: formData,
-          headers: { "Accept": "application/json" },
-          mode: "cors",
-        });
-
-        if (!response.ok) {
-          throw new Error(`Server returned ${response.status}`);
-        }
-
-        const result = await response.json();
-        
-        if (result && result.download) {
-          downloadAnchor.href = result.download;
-          downloadAnchor.textContent = result.download;
-          linkContainer.style.display = "block";
-        }
-      } catch (error) {
-        console.error("Error uploading file:", error);
-        alert("An error occurred while uploading the file.");
-      }
-      
-      loading.style.display = "none";
+<script>
+const groups = [
+  { id:"create", title:"Buat Akun", items: [
+    {
+      id:"create-vmess", method:"GET", path:"/create-vmess",
+      desc:"Membuat akun VMess baru (WS TLS, WS Non-TLS, gRPC) dengan kuota, limit IP, dan masa aktif tertentu.",
+      params:[
+        ["auth","string",1,"Auth key server"],
+        ["user","string",1,"Username, huruf &amp; angka saja"],
+        ["quota","number",1,"Kuota dalam GB"],
+        ["limitip","number",1,"Maksimal IP bersamaan"],
+        ["exp","number",1,"Masa aktif dalam hari"]
+      ],
+      example:"/create-vmess?auth=meki&user=budi01&quota=50&limitip=3&exp=30",
+      success:{code:200, body:{status:"success",data:{user:"budi01",uuid:"3f7c2e10-...-a1b2",expired:"2026-10-24",domain:"domain-anda.com",ws_tls:"vmess://eyJ2Ijoi...",ws_none_tls:"vmess://eyJ2Ijoi...",grpc:"vmess://eyJ2Ijoi...",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
+      errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Username can only contain letters and numbers"}],[409,{status:"failed",message:"Username already exists"}]]
+    },
+    {
+      id:"create-vless", method:"GET", path:"/create-vless",
+      desc:"Membuat akun VLESS baru (WS TLS, WS Non-TLS, gRPC).",
+      params:[
+        ["auth","string",1,"Auth key server"],
+        ["user","string",1,"Username, huruf &amp; angka saja"],
+        ["quota","number",1,"Kuota dalam GB"],
+        ["limitip","number",1,"Maksimal IP bersamaan"],
+        ["exp","number",1,"Masa aktif dalam hari"]
+      ],
+      example:"/create-vless?auth=meki&user=citra&quota=30&limitip=2&exp=30",
+      success:{code:200, body:{status:"success",data:{user:"citra",uuid:"9a11...-cd44",expired:"2026-10-24",domain:"domain-anda.com",ws_tls:"vless://9a11...#citra",ws_none_tls:"vless://9a11...#citra",grpc:"vless://9a11...#citra",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
+      errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Quota must be numeric"}],[409,{status:"failed",message:"Username already exists"}]]
+    },
+    {
+      id:"create-trojan", method:"GET", path:"/create-trojan",
+      desc:"Membuat akun Trojan baru (WS TLS, gRPC).",
+      params:[
+        ["auth","string",1,"Auth key server"],
+        ["user","string",1,"Username, huruf &amp; angka saja"],
+        ["quota","number",1,"Kuota dalam GB"],
+        ["limitip","number",1,"Maksimal IP bersamaan"],
+        ["exp","number",1,"Masa aktif dalam hari"]
+      ],
+      example:"/create-trojan?auth=meki&user=dimas&quota=40&limitip=3&exp=30",
+      success:{code:200, body:{status:"success",data:{user:"dimas",uuid:"55bd...-77ee",expired:"2026-10-24",domain:"domain-anda.com",ws:"trojan://55bd...@domain-anda.com:443?...#dimas",grpc:"trojan://55bd...@domain-anda.com:443?mode=gun...#dimas",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
+      errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Expiration must be numeric"}],[409,{status:"failed",message:"Username already exists"}]]
+    },
+    {
+      id:"create-ssh", method:"GET", path:"/create-ssh",
+      desc:"Membuat akun SSH/OpenVPN baru lengkap dengan port, format koneksi, dan payload. Password wajib dikirim manual lewat parameter.",
+      params:[
+        ["auth","string",1,"Auth key server"],
+        ["user / username","string",1,"Username (salah satu wajib diisi)"],
+        ["password","string",1,"Password SSH"],
+        ["exp","number",1,"Masa aktif dalam hari (1&ndash;3650)"],
+        ["limitip","number",1,"Maksimal IP bersamaan (1&ndash;10)"]
+      ],
+      example:"/create-ssh?auth=meki&user=eko&password=rahasia123&exp=30&limitip=2",
+      success:{code:200, body:{status:"success",data:{username:"eko",password:"rahasia123",host:"domain-anda.com",ip:"203.0.113.10",ports:{openSSH:"22",dropbear:"143, 109",dropbearWS:"443, 109",sshUDP:"1-65535",ovpnWSSSL:"443",ovpnSSL:"443",ovpnTCP:"1194",ovpnUDP:"2200",badVPN:"7100, 7300",sshWS:"80, 8080",sshWSSSL:"443"},formats:{port80:"domain-anda.com:80@eko:rahasia123",port443:"domain-anda.com:443@eko:rahasia123",udp:"domain-anda.com:1-65535@eko:rahasia123"},ovpnDownload:"http://domain.com/***",saveLink:"http://domain.com/***",created:"2026-09-24",expired:"2026-10-24",isp:"Contoh ISP",city:"Jakarta",limitIP:"2",dashboard_url:"http://domain.com/***","zivpn_password (opsional)":"eko-a1b"}}},
+      errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"SSH password must be provided via API parameter"}],[403,{status:"failed",message:"Creating system users is not allowed"}],[409,{status:"failed",message:"Username already exists"}]]
     }
-
-    function copyLink(button) {
-      const link = document.getElementById("downloadLink").href;
-      const checkmark = document.getElementById("checkmark");
-
-      navigator.clipboard.writeText(link).then(() => {
-        button.textContent = "Copied!";
-        button.classList.add("copied");
-        checkmark.classList.add("visible");
-
-        setTimeout(() => {
-          button.textContent = "Copy Link";
-          button.classList.remove("copied");
-          checkmark.classList.remove("visible");
-        }, 2000);
-      });
+  ]},
+  { id:"trial", title:"Trial Akun", items: [
+    {
+      id:"trial-vmess", method:"GET", path:"/trial-vmess",
+      desc:"Membuat akun VMess trial otomatis (username acak TrialXXXX) dengan durasi dalam menit.",
+      params:[
+        ["auth","string",1,"Auth key server"],
+        ["timer","number",0,"Durasi trial dalam menit (default 60)"]
+      ],
+      example:"/trial-vmess?auth=meki&timer=60",
+      success:{code:200, body:{status:"success",data:{user:"Trial4821",uuid:"c0a8...-90fe",expired:"60 minutes",domain:"domain-anda.com",ws_tls:"vmess://eyJ2Ijoi...",ws_none_tls:"vmess://eyJ2Ijoi...",grpc:"vmess://eyJ2Ijoi...",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
+      errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Timer must be greater than 0"}]]
+    },
+    {
+      id:"trial-vless", method:"GET", path:"/trial-vless",
+      desc:"Membuat akun VLESS trial otomatis dengan durasi dalam menit.",
+      params:[
+        ["auth","string",1,"Auth key server"],
+        ["timer","number",0,"Durasi trial dalam menit (default 60)"]
+      ],
+      example:"/trial-vless?auth=meki&timer=30",
+      success:{code:200, body:{status:"success",data:{user:"Trial1190",uuid:"7b21...-44aa",expired:"30 minutes",domain:"domain-anda.com",ws_tls:"vless://7b21...#Trial1190-TLS",ws_none_tls:"vless://7b21...#Trial1190-NoneTLS",grpc:"vless://7b21...#Trial1190-gRPC",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
+      errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Timer must be greater than 0"}]]
+    },
+    {
+      id:"trial-trojan", method:"GET", path:"/trial-trojan",
+      desc:"Membuat akun Trojan trial otomatis dengan durasi dalam menit.",
+      params:[
+        ["auth","string",1,"Auth key server"],
+        ["timer","number",0,"Durasi trial dalam menit (default 60)"]
+      ],
+      example:"/trial-trojan?auth=meki&timer=45",
+      success:{code:200, body:{status:"success",data:{user:"Trial7734",uuid:"1d5e...-bb02",expired:"45 minutes",domain:"domain-anda.com",ws:"trojan://1d5e...@domain-anda.com:443?...#Trial7734",grpc:"trojan://1d5e...@domain-anda.com:443?mode=gun...#Trial7734",openclash:"http://domain.com/***",dashboard_url:"http://domain.com/***"}}},
+      errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Timer must be greater than 0"}]]
+    },
+    {
+      id:"trial-ssh", method:"GET", path:"/trial-ssh",
+      desc:"Membuat akun SSH/OpenVPN trial otomatis (username TrialXXXXX, password tetap 1, limit IP 1).",
+      params:[
+        ["auth","string",1,"Auth key server"],
+        ["timer","number",0,"Durasi trial dalam menit (default 60)"]
+      ],
+      example:"/trial-ssh?auth=meki&timer=60",
+      success:{code:200, body:{status:"success",data:{username:"Trial58210",password:"1",host:"domain-anda.com",ip:"203.0.113.10",ports:{openSSH:"22",dropbear:"143, 109",dropbearWS:"443, 109",sshUDP:"1-65535",ovpnWSSSL:"443",ovpnSSL:"443",ovpnTCP:"1194",ovpnUDP:"2200",badVPN:"7100, 7300",sshWS:"80, 8080",sshWSSSL:"443"},formats:{port80:"domain-anda.com:80@Trial58210:1",port443:"domain-anda.com:443@Trial58210:1",udp:"domain-anda.com:1-65535@Trial58210:1"},ovpnDownload:"http://domain.com/***",saveLink:"http://domain.com/***",created:"2026-09-24",expired:"60 Minutes",isp:"Contoh ISP",city:"Jakarta",dashboard_url:"http://domain.com/***","zivpn_password (opsional)":"Trial58210-x9k"}}},
+      errors:[[401,{status:"failed",message:"Unauthorized: IP not allowed or expired"}],[400,{status:"failed",message:"Timer must be a positive number"}]]
     }
-  </script>
+  ]},
+  { id:"renew", title:"Perpanjang Akun", items: [
+    {
+      id:"renws", method:"GET", path:"/renws",
+      desc:"Memperpanjang akun VMess dan mereset pemakaian kuotanya ke 0.",
+      params:[["auth","string",1,"Auth key server"],["num","string",1,"Username akun VMess"],["exp","number",1,"Jumlah hari yang ditambahkan"]],
+      example:"/renws?auth=meki&num=budi01&exp=30",
+      success:{code:200, body:{status:"success",data:{username:"budi01",previous_expiry:"2026-10-24",days_added:30,expired:"2026-11-23",main_updated:true,grpc_updated:true}}},
+      errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Num parameter is required"}],[500,{status:"failed",message:"User budi01 expiration not found with pattern ###"}]]
+    },
+    {
+      id:"renvl", method:"GET", path:"/renvl",
+      desc:"Memperpanjang akun VLESS dan mereset pemakaian kuotanya ke 0.",
+      params:[["auth","string",1,"Auth key server"],["num","string",1,"Username akun VLESS"],["exp","number",1,"Jumlah hari yang ditambahkan"]],
+      example:"/renvl?auth=meki&num=citra&exp=15",
+      success:{code:200, body:{status:"success",data:{username:"citra",previous_expiry:"2026-10-24",days_added:15,expired:"2026-11-08",main_updated:true,grpc_updated:true}}},
+      errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Exp parameter must be numeric"}],[500,{status:"failed",message:"User citra not found in config"}]]
+    },
+    {
+      id:"rentr", method:"GET", path:"/rentr",
+      desc:"Memperpanjang akun Trojan dan mereset pemakaian kuotanya ke 0.",
+      params:[["auth","string",1,"Auth key server"],["num","string",1,"Username akun Trojan"],["exp","number",1,"Jumlah hari yang ditambahkan"]],
+      example:"/rentr?auth=meki&num=dimas&exp=30",
+      success:{code:200, body:{status:"success",data:{username:"dimas",previous_expiry:"2026-10-24",days_added:30,expired:"2026-11-23",main_updated:true,grpc_updated:true}}},
+      errors:[[401,{status:"failed",message:"Unauthorized"}],[400,{status:"failed",message:"Num parameter is required"}],[500,{status:"failed",message:"User dimas expiration not found with pattern #!"}]]
+    },
+    {
+      id:"rensh", method:"GET", path:"/rensh",
+      desc:"Memperpanjang masa aktif akun SSH (mengubah expiry date sistem lewat chage). Catatan: endpoint ini selalu membalas HTTP 200, status sukses/gagal dibedakan lewat field status pada body.",
+      params:[["auth","string",1,"Auth key server"],["num","string",1,"Username akun SSH"],["exp","number",1,"Jumlah hari yang ditambahkan"]],
+      example:"/rensh?auth=meki&num=eko&exp=30",
+      success:{code:200, body:{status:"success",data:{username:"eko",previous_expiry:"2026-10-24",days_added:30,expired:"2026-11-23",main_updated:true,grpc_updated:false}}},
+      errors:[[200,{status:"failed",message:"Num (username) parameter is required"}],[200,{status:"failed",message:"Exp parameter must be numeric"}],[200,{status:"failed",message:"Failed to renew SSH user: ..."}]]
+    }
+  ]}
+];
+
+function esc(s){return String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+
+function syntaxJSON(obj){
+  const raw = JSON.stringify(obj, null, 2);
+  return esc(raw)
+    .replace(/^(\s*)"(.*?)":/gm, '$1<span class="jk">"$2"</span>:')
+    .replace(/: "(.*?)"/g, ': <span class="js">"$1"</span>')
+    .replace(/: (\d+)/g, ': <span class="jn">$1</span>')
+    .replace(/: (true|false)/g, ': <span class="jn">$1</span>');
+}
+
+function renderParams(params){
+  let rows = params.map(p => `<tr><td><code>${p[0]}</code></td><td>${p[1]}</td><td>${p[2] ? '<span class="req">WAJIB</span>' : '<span class="opt">opsional</span>'}</td><td>${p[3]}</td></tr>`).join('');
+  return `<h3 class="sub">Parameter</h3><table class="params"><tr><th>Nama</th><th>Tipe</th><th>Status</th><th>Keterangan</th></tr>${rows}</table>`;
+}
+
+function renderErrors(errors){
+  return errors.map(([code, body]) => `
+    <div class="resp-label"><span class="code c-4">${code}</span></div>
+    <pre>${syntaxJSON(body)}</pre>`).join('');
+}
+
+function renderEndpoint(ep){
+  return `
+  <div class="card" id="${ep.id}">
+    <div class="card-head"><span class="method">${ep.method}</span><span class="path">${ep.path}</span></div>
+    <div class="card-body">
+      <p class="desc">${ep.desc}</p>
+      ${renderParams(ep.params)}
+      <h3 class="sub">Contoh Request</h3>
+      <pre class="req-line">GET ${ep.example}</pre>
+      <h3 class="sub">Contoh Response</h3>
+      <div class="resp-label"><span class="code c-200">${ep.success.code}</span></div>
+      <pre>${syntaxJSON(ep.success.body)}</pre>
+      ${renderErrors(ep.errors)}
+    </div>
+  </div>`;
+}
+
+const navEl = document.getElementById('nav');
+const endpointsEl = document.getElementById('endpoints');
+let navHtml = `<h4>Umum</h4><a href="#auth"><span class="m">i</span>Autentikasi</a>`;
+groups.forEach(g => {
+  navHtml += `<h4>${g.title}</h4>`;
+  g.items.forEach(ep => navHtml += `<a href="#${ep.id}"><span class="m">${ep.method}</span>${ep.path}</a>`);
+});
+navEl.innerHTML = navHtml;
+
+groups.forEach(g => {
+  endpointsEl.innerHTML += `<h4 class="sub" style="font-size:.8rem;color:var(--text);margin:2rem 0 1rem">${g.title}</h4>`;
+  g.items.forEach(ep => { endpointsEl.innerHTML += renderEndpoint(ep); });
+});
+</script>
 </body>
 </html>
